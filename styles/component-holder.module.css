@@ -1,144 +1,127 @@
-
-  .calcContainer {
-      text-align: center;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 600;
-      display: flex;
-      flex-wrap: wrap;
-      opacity: 0; /* Initially hidden */
-      transform: translateY(50px); /* Move down slightly */
-      animation: fadeInUp 0.8s ease-out forwards;
-      animation-delay: 0.6s; /* Delay to make it smoother */
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  
-
-  
-  
-  .calcs {
-    color: white;
-    width: 300px;
-    height: 250px;
-    background-color: rgb(167, 166, 166);
-    margin: 10px;
-    border-radius: 15px;
-    padding: 10px;
-    display: flex; /* Enables flexbox */
-    flex-direction: column; /* Stack content vertically */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    text-align: center; /* Align text */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .calcs:hover {
-    background-color: #d49d06;
-    transform: scale(1.05);
-    color: black;
-  }
-  
-  .calcs img {
-    width: 200px;
-    height: 150px;
-    object-fit: contain; /* Ensures image doesn't stretch */
-  }
-
-  .uploaderContainer {
-    background-color: gainsboro;
-    height: auto;
-    background-color: none;
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 100px;
-    text-align: center;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    display: flex;
-    opacity: 0;
-    transform: translateY(50px); 
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: 0.6s; 
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  
-  .fileInput {
-    display: none;
-  }
-  
-  .fileLabel {
-    background-color: rgb(37, 66, 179);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block;
-    margin: 10px;
-  }
-  
-  .placeholder {
-    color: gray;
-    margin-top: 10px;
-  }
-  
-  .fileList {
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
-  }
-  
-  .fileItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgb(91, 100, 107);
-    padding: 8px;
-    margin: 15px;
-    border-radius: 10px;
-  }
-  
-  .deleteButton {
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    margin: 10px;
-    padding: 4px 8px;
-    cursor: pointer;
-  }
-  
-
-.componentTitle{
+/* Base styles (unchanged) */
+.calcContainer {
   text-align: center;
-  opacity: 0; 
-  transform: translateY(50px); 
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(50px);
   animation: fadeInUp 0.8s ease-out forwards;
-  animation-delay: 0.5s; 
+  animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calcs {
+  color: white;
+  width: 300px;
+  height: 250px;
+  background-color: rgb(167, 166, 166);
+  margin: 10px;
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.calcs:hover {
+  background-color: #d49d06;
+  transform: scale(1.05);
+  color: black;
+}
+
+.calcs img {
+  width: 200px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.uploaderContainer {
+  background-color: gainsboro;
+  height: auto;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 100px;
+  text-align: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  display: flex;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+.fileInput {
+  display: none;
+}
+
+.fileLabel {
+  background-color: rgb(37, 66, 179);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 10px;
+}
+
+.placeholder {
+  color: gray;
+  margin-top: 10px;
+}
+
+.fileList {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.fileItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(91, 100, 107);
+  padding: 8px;
+  margin: 15px;
+  border-radius: 10px;
+}
+
+.deleteButton {
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.componentTitle {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.5s;
   margin-top: 80px;
   font-size: 80px;
   font-weight: 600;
@@ -151,23 +134,11 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
-  opacity: 0; /* Initially hidden */
-  transform: translateY(50px); /* Move down slightly */
+  opacity: 0;
+  transform: translateY(50px);
   animation: fadeInUp 0.8s ease-out forwards;
-  animation-delay: 0.6s; /* Delay to make it smoother */
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  
+  animation-delay: 0.6s;
+}
 
 .newsBox {
   background: #fff;
@@ -222,58 +193,45 @@
   color: #666;
 }
 
+.formContainer {
+  margin-top: 100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+}
 
-.formContainer{
-    margin-top: 100px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 600;
-    display: flex;
-    flex-wrap: wrap;
-    opacity: 0; /* Initially hidden */
-    transform: translateY(50px); /* Move down slightly */
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: 0.6s; /* Delay to make it smoother */
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-
-.form{
+.form {
   color: black;
-    width: 400px;
-    height: 500px;
-    background-color: rgb(243, 243, 243);
-    margin: 10px;
-    border-radius: 15px;
-    padding: 10px;
-    display: flex; 
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    text-align: center; 
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .calcs:hover {
-    background-color: #d49d06;
-    transform: scale(1.05);
-    color: black;
-  }
+  width: 400px;
+  height: 500px;
+  background-color: rgb(243, 243, 243);
+  margin: 10px;
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-.input{
+.calcs:hover {
+  background-color: #d49d06;
+  transform: scale(1.05);
+  color: black;
+}
+
+.input {
   font-size: 15px;
   width: 90%;
   border-radius: 15px;
@@ -296,11 +254,11 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.loginBtn:hover{
+.loginBtn:hover {
   background-color: goldenrod;
 }
 
-.signupBtn{
+.signupBtn {
   border-radius: 15px;
   margin-top: 15px;
   color: black;
@@ -312,7 +270,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.signupBtn:hover{
+.signupBtn:hover {
   background-color: goldenrod;
 }
 
@@ -327,12 +285,12 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.navLoginBtn:hover{
+.navLoginBtn:hover {
   color: black;
   background-color: goldenrod;
 }
 
-.navLogoutBtn{
+.navLogoutBtn {
   border-radius: 15px;
   color: white;
   background-color: rgb(90, 14, 14);
@@ -343,7 +301,122 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.navLogoutBtn:hover{
+.navLogoutBtn:hover {
   color: black;
   background-color: goldenrod;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .componentTitle {
+    font-size: 48px;
+    margin-top: 40px;
+  }
+  
+  .calcs {
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+    min-height: 200px;
+    margin: 10px auto;
+  }
+  
+  .calcs img {
+    width: 80%;
+    height: auto;
+    max-height: 120px;
+  }
+  
+  .uploaderContainer {
+    margin-top: 50px;
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  .fileLabel {
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+  
+  .formContainer {
+    margin-top: 50px;
+    font-size: 18px;
+  }
+  
+  .form {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    padding: 20px 10px;
+    margin: 10px auto;
+  }
+  
+  .input {
+    font-size: 14px;
+    height: 45px;
+  }
+  
+  .loginBtn,
+  .signupBtn {
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .newsContainer {
+    padding: 0.5rem;
+  }
+  
+  .newsBox {
+    padding: 1rem;
+  }
+  
+  .newsItem {
+    padding: 0.75rem 0;
+  }
+  
+  .newsDescription {
+    font-size: 16px;
+  }
+  
+  .navLoginBtn,
+  .navLogoutBtn {
+    width: 70px;
+    height: 35px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .componentTitle {
+    font-size: 36px;
+  }
+  
+  .calcs {
+    width: 95%;
+    min-height: 180px;
+  }
+  
+  .form {
+    width: 95%;
+  }
+  
+  .input {
+    height: 40px;
+  }
+  
+  .newsBox {
+    padding: 0.75rem;
+  }
+  
+  .newsItem {
+    padding: 0.5rem 0;
+  }
+  
+  .newsDescription {
+    font-size: 15px;
+  }
+  
+  .newsDate {
+    font-size: 0.75rem;
+  }
 }
