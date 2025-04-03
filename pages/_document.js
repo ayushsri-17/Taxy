@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
+      <title>Taxy</title>
       <body className="antialiased">
         <Main />
         <NextScript />
