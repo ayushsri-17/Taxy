@@ -3,7 +3,7 @@ export default function incomeExpenseManager(){
     return(
      <>
      
-     <h1 className={styles.componentTitle}>Work in Progress..</h1>
+     <h1 className={styles.componentTitle}>Work in Progress...</h1>
 
      
      </>
