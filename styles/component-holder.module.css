@@ -54,11 +54,13 @@
 }
 
 .uploaderContainer {
+  width: 700px;
   background-color: gainsboro;
   height: auto;
   padding: 20px;
   border-radius: 15px;
   margin-top: 100px;
+  margin-bottom: 60px;
   text-align: center;
   flex-wrap: wrap;
   align-items: center;
@@ -100,20 +102,41 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgb(91, 100, 107);
+  background: rgb(168, 167, 167);
   padding: 8px;
   margin: 15px;
   border-radius: 10px;
 }
 
 .deleteButton {
-  background: red;
+  background: rgb(156, 1, 1);
   color: white;
   border: none;
   border-radius: 10px;
   margin: 10px;
   padding: 4px 8px;
   cursor: pointer;
+}
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.sortSelect {
+  color: black;
+  padding: 0.2rem;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.fileInfo {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.2rem;
 }
 
 .componentTitle {
@@ -194,7 +217,7 @@
 }
 
 .formContainer {
-  margin-top: 100px;
+  margin-bottom: 5rem;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -206,12 +229,13 @@
   transform: translateY(50px);
   animation: fadeInUp 0.8s ease-out forwards;
   animation-delay: 0.6s;
+
 }
 
 .form {
+  width: 600px;
   color: black;
-  width: 400px;
-  height: 500px;
+  height: auto;
   background-color: rgb(243, 243, 243);
   margin: 10px;
   border-radius: 15px;
@@ -225,13 +249,16 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.calcs:hover {
+.form:hover {
   background-color: #d49d06;
   transform: scale(1.05);
   color: black;
 }
 
+
+
 .input {
+  background-color: white;
   font-size: 15px;
   width: 90%;
   border-radius: 15px;
@@ -274,6 +301,35 @@
   background-color: goldenrod;
 }
 
+.submitBtn{
+  background-color: black;
+  border-radius: 15px;
+  margin-top: 15px;
+  color: white;
+  border: 2px solid yellow;
+  height: 50px;
+  width: 90%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.addBtn{
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 15px;
+  color: black;
+  border: 2px solid green;
+  height: 50px;
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.addBtn:hover {
+  background-color: gainsboro;
+}
+
+
 .navLoginBtn {
   border-radius: 15px;
   color: white;
@@ -305,6 +361,148 @@
   color: black;
   background-color: goldenrod;
 }
+
+/* Add these styles to your component-holder.module.css */
+
+.resultsContainer {
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.resultsContainer h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.75rem;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 1.1rem;
+}
+
+.resultItem:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.resultItem span:first-child {
+  font-weight: 500;
+  color: #555;
+}
+
+.resultItem span:last-child {
+  color: #16a085;
+  font-weight: 700;
+}
+
+.taxNote {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border-left: 5px solid goldenrod;
+}
+
+.taxNote p {
+  margin: 0;
+}
+
+/* Container for form + suggestions side by side */
+.formAndSuggestionsContainer {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Suggestions container styling */
+.suggestionsContainer {
+  margin-bottom: 5rem;
+  width: 500px;
+  color: black;
+  flex: 1;
+  background: #fdfeff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 1rem;
+}
+
+.suggestionsList {
+  margin: 1rem 0;
+}
+
+.suggestionItem {
+
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background: white;
+  border-left: 4px solid #4CAF50;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.generalTips {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #063621;
+  border-radius: 8px;
+}
+
+.generalTips ul {
+  
+  padding-left: 1.5rem;
+}
+
+.generalTips li {
+  color: goldenrod;
+  margin: 0.5rem 0;
+}
+
+/* Animation for smooth appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .resultsContainer {
+    padding: 1rem;
+  }
+  
+  .resultItem {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .resultItem span:last-child {
+    font-size: 1.2rem;
+  }
+}
+
 
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {

@@ -1,0 +1,169 @@
+.container {
+    color: black;
+    margin-bottom: 60px;
+    margin-top: 80px;
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color:gainsboro;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+.chartWrapper {
+  margin: 2rem auto;
+  max-width: 300px;
+}
+
+  
+  .container:hover {
+    color: black;
+    transform: scale(2.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateY(5px); 
+  }
+  
+  .balance {
+    font-size: 24px;
+    text-align: center;
+    font-weight: 800;
+  }
+  
+  .balance.positive {
+    
+    color: rgb(0, 0, 0);
+  }
+  
+  .balance.negative {
+    color: red;
+  }
+  
+  .summary {
+    margin: 30px;
+    font-weight:600;
+    border-radius: 10px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .incomeSummary {
+    color: green;
+  }
+  
+  .expenseSummary {
+    color: rgb(163, 0, 0);
+  }
+  
+  .form {
+    margin-bottom: 30px;
+  }
+  
+  .formTitle {
+    margin-bottom: 10px;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .input {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .inputDescription {
+    width: 200px;
+  }
+  
+  .inputAmount {
+    width: 100px;
+  }
+  
+  .select {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 180px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .incomeButton {
+    background-color: green;
+  }
+  
+  .expenseButton {
+    background-color:  rgb(163, 0, 0);
+  }
+  
+  .transactions {
+    margin-top: 20px;
+  }
+  
+  .transactionsContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .transactionColumn {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .transactionTitle {
+    color: #333;
+  }
+  
+  .transactionList {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .transactionItem {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .incomeItem {
+    color: green;
+  }
+  
+  .expenseItem {
+    color: red;
+  }
+  
+  .deleteButton {
+    background-color: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
