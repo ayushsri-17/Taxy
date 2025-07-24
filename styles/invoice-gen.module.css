@@ -15,7 +15,8 @@
     animation: fadeInUp 0.8s ease-out forwards;
     animation-delay: 0.6s;
     box-sizing: border-box; /* Include padding in width calculations */
-    width: calc(100% - 40px); /* Account for margins */
+    width: calc(100% - 40px);
+    box-shadow: 10px 5px 5px rgb(0, 0, 0); /* Account for margins */
 }
 
 /* Fade-in Animation */
@@ -56,6 +57,7 @@
     text-align: left;
     overflow-y: auto;
     box-sizing: border-box;
+    box-shadow: 2px 5px 5px rgb(0, 0, 0);
 }
 
 /* Invoice Table */
@@ -90,15 +92,10 @@
 
 /* Input Section */
 .inputGroup {
-    border-radius: 5px;
-    background-color: rgb(182, 177, 177);
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    justify-content: center; /* Center items when they wrap */
-    padding: 10px; /* Added padding */
-    width: 100%; /* Full width */
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .input {
@@ -106,7 +103,7 @@
     padding: 8px;
     border: 1px solid #ccc;
     width: 120px;
-    box-sizing: border-box;
+    min-width: 150px;
     font-size: 16px; /* Consistent font size */
 }
 
@@ -247,4 +244,10 @@
         width: 100%;
         max-width: 120px;
     }
+}
+
+@media print {
+  .noPrint {
+    display: none !important;
+  }
 }

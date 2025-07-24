@@ -71,6 +71,7 @@
   transform: translateY(50px);
   animation: fadeInUp 0.8s ease-out forwards;
   animation-delay: 0.6s;
+  box-shadow: 10px 5px 5px rgb(0, 0, 0);
 }
 
 .fileInput {
@@ -106,6 +107,7 @@
   padding: 8px;
   margin: 15px;
   border-radius: 10px;
+  box-shadow: 10px 5px 5px rgb(0, 0, 0);
 }
 
 .deleteButton {

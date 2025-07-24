@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Navbar from "./navbar";
 
 export default function Home() {
-  
+
   const features = [
     { title: "Tax Calculator", img: "calculator.png", link: "/calc-holder" },
     { title: "Document Holder", img: "folder.png", link: "/document-holder" },
@@ -12,33 +12,39 @@ export default function Home() {
     { title: "Tax-Filing Assistance", img: "tax-filler.png", link: "/taxfiling-assist" },
     { title: "News Box", img: "news.png", link: "/news-box" },
   ];
-  
-  
+
   return (
     <>
-    <div className="container">
-    <Navbar/>
-    <section className="section-1">
-       <h1 className="title">Welcome to TAXY</h1>
-       <h1 style={{fontSize:"35px",fontWeight:"600"}}>Let's make your taxes easy and simple</h1>
-    
-     </section> 
+      <div className="container">
+        <Navbar />
+        <section className="section-1">
+          <h1 className="title">Welcome to TAXY</h1>
+          <h1 style={{ fontSize: "35px", fontWeight: "600" }}>
+            Let's make your taxes easy and simple
+          </h1>
+        </section>
 
-     <section className="section-2">
-      <h1 style={{fontSize:"60px",fontWeight:"600"}}>Features</h1>
-      
-      <div className="features-container">
-        {features.map((feature, index)=>(
-         <Link href={feature.link} key={index}>
-        <div id="features">
-        {feature.title}
-        <img src={feature.img}></img>
-        </div>
-        </Link> 
-        ))}
+        <section className="section-2">
+          <h1 style={{ fontSize: "60px", fontWeight: "600" }}>Features</h1>
+
+          <div className="features-container">
+            {features.map((feature, index) => (
+              <Link href={feature.link} key={index}>
+                <div id="features">
+                  {feature.title}
+                 <Image 
+                    src={`/${feature.img}`} 
+                    alt={feature.title} 
+                    width={220} 
+                    height={200}
+                    className="feature-image"
+                    />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
-     </section>
-    </div>
     </>
-  )
+  );
 }
