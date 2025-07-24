@@ -119,6 +119,7 @@
   padding: 4px 8px;
   cursor: pointer;
 }
+
 .controls {
   display: flex;
   gap: 1rem;
@@ -231,7 +232,6 @@
   transform: translateY(50px);
   animation: fadeInUp 0.8s ease-out forwards;
   animation-delay: 0.6s;
-
 }
 
 .form {
@@ -256,8 +256,6 @@
   transform: scale(1.05);
   color: black;
 }
-
-
 
 .input {
   background-color: white;
@@ -303,7 +301,7 @@
   background-color: goldenrod;
 }
 
-.submitBtn{
+.submitBtn {
   background-color: black;
   border-radius: 15px;
   margin-top: 15px;
@@ -315,7 +313,7 @@
   cursor: pointer;
 }
 
-.addBtn{
+.addBtn {
   background-color: white;
   border-radius: 15px;
   margin-top: 15px;
@@ -330,7 +328,6 @@
 .addBtn:hover {
   background-color: gainsboro;
 }
-
 
 .navLoginBtn {
   border-radius: 15px;
@@ -365,7 +362,6 @@
 }
 
 /* Add these styles to your component-holder.module.css */
-
 .resultsContainer {
   margin-bottom: 3rem;
   margin-top: 2rem;
@@ -425,14 +421,12 @@
   margin: 0;
 }
 
-/* Container for form + suggestions side by side */
 .formAndSuggestionsContainer {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
 }
 
-/* Suggestions container styling */
 .suggestionsContainer {
   margin-bottom: 5rem;
   width: 500px;
@@ -441,7 +435,7 @@
   background: #fdfeff;
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 1rem;
 }
@@ -451,13 +445,12 @@
 }
 
 .suggestionItem {
-
   padding: 0.75rem;
   margin: 0.5rem 0;
   background: white;
   border-left: 4px solid #4CAF50;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .generalTips {
@@ -468,7 +461,6 @@
 }
 
 .generalTips ul {
-  
   padding-left: 1.5rem;
 }
 
@@ -477,7 +469,7 @@
   margin: 0.5rem 0;
 }
 
-/* Animation for smooth appearance */
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -491,98 +483,84 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .formAndSuggestionsContainer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .suggestionsContainer {
+    width: 90%;
+    position: static;
+  }
+
   .resultsContainer {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
     padding: 1rem;
   }
-  
+
   .resultItem {
     flex-direction: column;
     gap: 0.25rem;
   }
-  
-  .resultItem span:last-child {
-    font-size: 1.2rem;
-  }
-}
 
-
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
   .componentTitle {
-    font-size: 48px;
+    font-size: 42px;
     margin-top: 40px;
   }
-  
+
   .calcs {
     width: 90%;
-    max-width: 300px;
     height: auto;
     min-height: 200px;
-    margin: 10px auto;
   }
-  
+
   .calcs img {
     width: 80%;
     height: auto;
     max-height: 120px;
   }
-  
-  .uploaderContainer {
-    margin-top: 50px;
+
+  .uploaderContainer,
+  .formContainer {
     padding: 15px;
     font-size: 18px;
-  }
-  
-  .fileLabel {
-    padding: 6px 10px;
-    font-size: 16px;
-  }
-  
-  .formContainer {
     margin-top: 50px;
-    font-size: 18px;
   }
-  
+
   .form {
     width: 90%;
     max-width: 400px;
-    height: auto;
-    padding: 20px 10px;
-    margin: 10px auto;
   }
-  
-  .input {
-    font-size: 14px;
-    height: 45px;
-  }
-  
+
+  .input,
   .loginBtn,
-  .signupBtn {
-    height: 40px;
+  .signupBtn,
+  .submitBtn,
+  .addBtn {
+    width: 100%;
     font-size: 16px;
   }
-  
-  .newsContainer {
-    padding: 0.5rem;
-  }
-  
-  .newsBox {
-    padding: 1rem;
-  }
-  
-  .newsItem {
-    padding: 0.75rem 0;
-  }
-  
-  .newsDescription {
-    font-size: 16px;
-  }
-  
+
   .navLoginBtn,
   .navLogoutBtn {
     width: 70px;
     height: 35px;
     font-size: 14px;
+  }
+
+  .newsBox {
+    padding: 1rem;
+  }
+
+  .newsItem {
+    padding: 0.75rem 0;
+  }
+
+  .newsDescription {
+    font-size: 16px;
   }
 }
 
@@ -590,32 +568,32 @@
   .componentTitle {
     font-size: 36px;
   }
-  
+
   .calcs {
     width: 95%;
     min-height: 180px;
   }
-  
+
   .form {
     width: 95%;
   }
-  
+
   .input {
     height: 40px;
   }
-  
+
   .newsBox {
     padding: 0.75rem;
   }
-  
+
   .newsItem {
     padding: 0.5rem 0;
   }
-  
+
   .newsDescription {
     font-size: 15px;
   }
-  
+
   .newsDate {
     font-size: 0.75rem;
   }
