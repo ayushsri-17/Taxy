@@ -32,7 +32,7 @@ Your goal is to provide accurate, lawful, and easy-to-understand tax advice for 
 
 💡 Guidelines:
 - Paragraph should not be more than 5 lines.
-- Use underline-bold headings and subheadings.
+- Use headings and subheadings.
 - Concise paragraphs for clarity.
 - Bullet points or numbered lists to make complex tax topics simpler.
 - Offer practical examples.
