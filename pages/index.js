@@ -6,10 +6,10 @@ export default function Home() {
 
   const features = [
     { title: "Tax Calculator", img: "calculator.png", link: "/calc-holder" },
-    { title: "Document Holder", img: "folder.png", link: "/document-holder" },
+    { title: "Ask Taxy", img: "folder.png", link: "/askTaxy" },
     { title: "Income-Expense Manager", img: "wallet.png", link: "/income-expense-manager" },
     { title: "Invoice Generator", img: "invoice.png", link: "/invoice-generator" },
-    { title: "Tax-Filing Assistance", img: "tax-filler.png", link: "/taxfiling-assist" },
+    { title: "AI Tax-Filing Assistance", img: "tax-filler.png", link: "/taxfiling-assist" },
     { title: "News Box", img: "news.png", link: "/news-box" },
   ];
 
@@ -32,13 +32,15 @@ export default function Home() {
               <Link href={feature.link} key={index}>
                 <div id="features">
                   {feature.title}
-                 <Image 
-                    src={`/${feature.img}`} 
-                    alt={feature.title} 
-                    width={220} 
-                    height={200}
-                    className="feature-image"
+                 <div className="feature-image-container">
+                    <Image
+                      src={`/${feature.img}`}
+                      alt={feature.title}
+                      width={150}
+                      height={150}
+                      className="feature-image"
                     />
+                  </div>
                 </div>
               </Link>
             ))}

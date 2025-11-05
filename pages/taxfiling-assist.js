@@ -22,54 +22,39 @@ export default function TaxFiling() {
   const [taxResult, setTaxResult] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [loadingAI, setLoadingAI] = useState(false);
 
-  const generateSuggestions = (data) => {
-    const newSuggestions = [];
-    const totalIncome = parseFloat(data.salaryIncome || 0) + 
-                        parseFloat(data.businessIncome || 0) + 
-                        parseFloat(data.otherIncome || 0);
 
-    newSuggestions.push("✅ Always file your return before the due date to avoid penalties");
-    newSuggestions.push("✅ Keep all investment proofs and documents handy for verification");
+async function getAISuggestions(formData) {
+  try {
+    const response = await fetch("/api/tax-filing-assist", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ formData }),
+  });
 
-    if (totalIncome > 500000) {
-      newSuggestions.push("💡 Consider investing more in Section 80C instruments (max ₹1.5L) to reduce taxable income");
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Backend API error:", data);
+      return ["⚠️ Backend API error: " + (data.error?.message || "Unknown error")];
     }
 
-    if (totalIncome > 1000000) {
-      newSuggestions.push("💡 Explore tax-free bonds for additional tax-free income");
-    }
+    const text =
+      data?.choices?.[0]?.message?.content?.[0]?.text ||
+      data?.choices?.[0]?.message?.content ||
+      "No AI suggestions generated.";
 
-    if (parseFloat(data["80C"] || 0) < 150000) {
-      newSuggestions.push("💰 You can invest up to ₹1.5L in 80C instruments (PPF, ELSS, NSC, etc.) for tax savings");
-    }
+    return text
+      .split(/\n(?=\d+\.|•|–|✅|💡|🏠|💰)/)
+      .filter(Boolean);
+  } catch (err) {
+    console.error("AI suggestion error:", err);
+    return ["⚠️ Error fetching AI suggestions."];
+  }
+}
 
-    if (parseFloat(data["80D"] || 0) < 25000) {
-      newSuggestions.push("🏥 Consider health insurance (up to ₹25,000 for self, up to ₹50,000 for senior citizens) under 80D");
-    }
 
-    if (parseFloat(data.homeLoanInterest || 0) === 0 && totalIncome > 1000000) {
-      newSuggestions.push("🏠 Home loan interest (Section 24) can give additional deduction up to ₹2L - consider if planning to buy property");
-    }
-
-    if (data.regime === 'Old') {
-      newSuggestions.push("🔍 Compare with New regime - it might be beneficial if you don't have many deductions");
-    } else {
-      newSuggestions.push("🔍 Compare with Old regime - it might be beneficial if you have significant deductions");
-    }
-
-    if (parseInt(data.age) >= 60) {
-      newSuggestions.push("👵 Senior citizens get higher exemption limits - ensure you're claiming them");
-    }
-
-    return newSuggestions;
-  };
-
-  useEffect(() => {
-    if (formData.age || formData.salaryIncome || formData.businessIncome) {
-      setSuggestions(generateSuggestions(formData));
-    }
-  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -130,11 +115,23 @@ export default function TaxFiling() {
     }
   };
 
+  const handleAISuggestions = async () => {
+  setLoadingAI(true);
+  setSuggestions(["Thinking..."]);
+
+
+  await new Promise(resolve => setTimeout(resolve, 2000));
+
+  const newSuggestions = await getAISuggestions(formData);
+  setSuggestions(newSuggestions);
+  setLoadingAI(false);
+};
+
+
   return (
     <>
-      <h1 className={styles.componentTitle}>Tax Filing Assistant</h1>
+      <h1 className={styles.componentTitle}> AI Tax Filing Assistant</h1>
       <button className={styles.addBtn} onClick={handleReset}>Start a new filing ➕</button>
-
       <div className={styles.formAndSuggestionsContainer}>
         <div className={styles.formSection}>
           <form className={styles.form} onSubmit={handleSubmit}>
@@ -171,7 +168,7 @@ export default function TaxFiling() {
             <input className={styles.input} type="number" name="HRA" value={formData.HRA} onChange={handleChange} placeholder="HRA (if applicable)" />
             <input className={styles.input} type="number" name="homeLoanInterest" value={formData.homeLoanInterest} onChange={handleChange} placeholder="Home loan interest (Section 24B)" />
 
-            <button type="submit" className={styles.submitBtn}>Calculate Tax</button>
+            <button onClick={handleAISuggestions} disabled={loadingAI} className={styles.submitBtn}>{loadingAI ? 'Thinking...' : 'Get AI Suggestions'}</button>
           </form>
 
           {showResults && taxResult && (
@@ -200,7 +197,7 @@ export default function TaxFiling() {
         </div>
 
         <div className={styles.suggestionsContainer}>
-          <h2 style={{fontWeight:'900'}}>Tax Saving Tips</h2>
+          <h2 style={{fontWeight:'900'}}>Ai Tax Saving Tips</h2>
           <div className={styles.suggestionsList}>
             {suggestions.length > 0 ? (
               suggestions.map((suggestion, index) => (
@@ -209,7 +206,7 @@ export default function TaxFiling() {
                 </div>
               ))
             ) : (
-              <p>Fill in some details to get personalized tax-saving suggestions</p>
+              <p>Fill in some details to get personalized AI tax-saving suggestions</p>
             )}
           </div>
           <div className={styles.generalTips}>
