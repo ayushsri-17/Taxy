@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-   "bcryptjs": "^2.4.3",
+    "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "html2canvas": "^1.4.1",
     "mongoose": "^8.13.1",
-    "next": "^15.2.2",
+    "next": "15.2.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
