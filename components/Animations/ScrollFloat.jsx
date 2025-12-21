@@ -1,11 +1,5 @@
-"use client";
-
 import { useEffect, useMemo, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./ScrollFloat.module.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const ScrollFloat = ({
   children,
@@ -16,7 +10,7 @@ const ScrollFloat = ({
   ease = "back.inOut(2)",
   scrollStart = "center bottom+=50%",
   scrollEnd = "bottom bottom-=40%",
-  stagger = 0.03
+  stagger = 0.03,
 }) => {
   const containerRef = useRef(null);
 
@@ -33,39 +27,55 @@ const ScrollFloat = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const scroller =
-      scrollContainerRef?.current || window;
+    let ctx;
 
-    const chars = containerRef.current.querySelectorAll(
-      `.${styles.char}`
-    );
+    (async () => {
+      const gsapModule = await import("gsap");
+      const scrollTriggerModule = await import("gsap/ScrollTrigger");
 
-    gsap.fromTo(
-      chars,
-      {
-        opacity: 0,
-        yPercent: 120,
-        scaleY: 2.3,
-        scaleX: 0.7,
-        transformOrigin: "50% 0%"
-      },
-      {
-        opacity: 1,
-        yPercent: 0,
-        scaleY: 1,
-        scaleX: 1,
-        duration: animationDuration,
-        ease,
-        stagger,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          scroller,
-          start: scrollStart,
-          end: scrollEnd,
-          scrub: true
-        }
-      }
-    );
+      const gsap = gsapModule.gsap || gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const scroller =
+        scrollContainerRef?.current || window;
+
+      const chars = containerRef.current.querySelectorAll(
+        `.${styles.char}`
+      );
+
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          chars,
+          {
+            opacity: 0,
+            yPercent: 120,
+            scaleY: 2.3,
+            scaleX: 0.7,
+            transformOrigin: "50% 0%",
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            scaleY: 1,
+            scaleX: 1,
+            duration: animationDuration,
+            ease,
+            stagger,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              scroller,
+              start: scrollStart,
+              end: scrollEnd,
+              scrub: true,
+            },
+          }
+        );
+      });
+    })();
+
+    return () => ctx && ctx.revert();
   }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
 
   return (
@@ -73,9 +83,7 @@ const ScrollFloat = ({
       ref={containerRef}
       className={`${styles.scrollFloat} ${containerClassName}`}
     >
-      <span
-        className={`${styles.scrollFloatText} ${textClassName}`}
-      >
+      <span className={`${styles.scrollFloatText} ${textClassName}`}>
         {splitText}
       </span>
     </h2>
