@@ -22,8 +22,8 @@ export default function Navbar() {
         <nav className="navbar">
             <div className="nav-links">
                 <Link href="/">Home</Link>
-                <Link href="/#features">Features</Link>
-                <Link href="/About">About</Link>
+                <Link href="/#feature-card">Features</Link>
+                <Link href="/#about">About</Link>
                 {isLoggedIn ? (
                     <button onClick={handleLogout} className={styles.navLogoutBtn}>
                         Logout

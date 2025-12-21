@@ -1,251 +1,224 @@
 .container {
-    height: auto; /* Changed from fixed height to auto */
-    min-height: 350px; /* Minimum height */
-    background-color: gainsboro;
-    padding: 20px;
-    border-radius: 15px;
-    margin: 30px 20px 50px; /* Added horizontal margins */
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: 0.6s;
-    box-sizing: border-box; /* Include padding in width calculations */
-    width: calc(100% - 40px);
-    box-shadow: 10px 5px 5px rgb(0, 0, 0); /* Account for margins */
+  height: auto;
+  min-height: 360px;
+  background-color: #F6FBFA;
+  padding: 28px;
+  border-radius: 18px;
+  margin: 40px auto 60px;
+  max-width: 900px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+
+  box-shadow: 0 15px 40px rgba(28, 63, 58, 0.12);
+  box-sizing: border-box;
 }
 
 /* Fade-in Animation */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Title */
 .title {
-    text-align: center;
-    margin: 70px 20px 0; /* Added horizontal margins */
-    font-size: 70px;
-    font-weight: 600;
-    background-image: linear-gradient(45deg, #ff8a05, #cb004b);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: 0.5s;
-    line-height: 1.2; /* Better line spacing */
+  text-align: center;
+  margin: 120px 20px 40px;
+  font-size: 72px;
+  font-weight: 300;
+  color: #0A0C29;
+  line-height: 1.2;
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.5s;
 }
 
 /* Invoice Section */
 .invoice {
-    color: #000;
-    border: 2px solid gray;
-    width: 100%; /* Changed from 80% to 100% */
-    max-height: 400px;
-    padding: 15px;
-    margin-bottom: 20px;
-    background: #f9f9f9;
-    text-align: left;
-    overflow-y: auto;
-    box-sizing: border-box;
-    box-shadow: 2px 5px 5px rgb(0, 0, 0);
+  color: #0A0C29;
+  border: 2px solid #1C3F3A;
+  border-radius: 14px;
+  width: 100%;
+  max-height: 420px;
+  padding: 18px;
+  margin-bottom: 24px;
+  background: #EBEBD8;
+  text-align: left;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* Invoice Table */
 .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 15px;
-    font-size: 16px; /* Base font size */
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+  font-size: 16px;
 }
 
 .table th,
 .table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-    word-break: break-word; /* Prevent text overflow */
+  border: 1.5px solid #1C3F3A;
+  padding: 12px;
+  text-align: center;
+  word-break: break-word;
 }
 
 .table th {
-    background-color: #333;
-    color: white;
+  font-weight: 600;
+  background-color: rgba(28, 63, 58, 0.08);
+  color: #0A0C29;
 }
 
 /* Total Amount */
 .total {
-    text-align: right;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
-    padding-right: 10px; /* Added padding */
+  text-align: right;
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 12px;
+  padding-right: 10px;
 }
 
 /* Input Section */
 .inputGroup {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .input {
-    color: #000;
-    padding: 8px;
-    border: 1px solid #ccc;
-    width: 120px;
-    min-width: 150px;
-    font-size: 16px; /* Consistent font size */
+  color: #0A0C29;
+  padding: 10px 12px;
+  border: 1.5px solid #C7D8D4;
+  border-radius: 10px;
+  min-width: 160px;
+  font-size: 16px;
+  background-color: #F6FBFA;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #1C3F3A;
+  box-shadow: 0 0 0 3px rgba(28, 63, 58, 0.15);
 }
 
 /* Buttons */
 .addBtn,
 .removeBtn,
 .downloadBtn {
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    font-size: 16px; /* Consistent font size */
-    min-width: 80px; /* Minimum button width */
-    transition: opacity 0.2s ease; /* Smooth hover effect */
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  min-width: 90px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-.addBtn {
-    background-color: #007bff;
+.addBtn,
+.downloadBtn {
+  background-color: #1C3F3A;
 }
 
 .removeBtn {
-    background-color: #dc3545;
-}
-
-.downloadBtn {
-    background-color: #28a745;
+  background-color: #6D1720;
 }
 
 .addBtn:hover,
 .removeBtn:hover,
 .downloadBtn:hover {
-    opacity: 0.8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+  opacity: 0.95;
 }
 
-/* Mobile Responsive Styles */
+/* ---------------- MOBILE ---------------- */
+
 @media (max-width: 768px) {
-    .title {
-        font-size: 48px;
-        margin-top: 50px;
-    }
-    
-    .container {
-        margin-top: 40px;
-        padding: 15px;
-    }
-    
-    .invoice {
-        padding: 10px;
-    }
-    
-    .table th,
-    .table td {
-        padding: 8px 5px;
-        font-size: 14px;
-    }
-    
-    .total {
-        font-size: 16px;
-    }
-    
-    .inputGroup {
-        gap: 8px;
-    }
-    
-    .input {
-        width: 100px;
-        font-size: 14px;
-    }
-    
-    .addBtn,
-    .removeBtn,
-    .downloadBtn {
-        padding: 6px 10px;
-        font-size: 14px;
-    }
+  .title {
+    font-size: 48px;
+    margin-top: 60px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .input {
+    min-width: 120px;
+    font-size: 14px;
+  }
+
+  .addBtn,
+  .removeBtn,
+  .downloadBtn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
 }
 
 @media (max-width: 480px) {
-    .title {
-        font-size: 36px;
-        margin-top: 100px;
-    }
-    
-    .container {
-        margin-top: 50px;
-        padding: 10px;
-    }
-    
-    .table {
-        font-size: 12px;
-    }
-    
-    .table th,
-    .table td {
-        padding: 6px 3px;
-        font-size: 12px;
-    }
-    
-    .total {
-        font-size: 14px;
-    }
-    
-    .input {
-        width: 80px;
-        font-size: 12px;
-        padding: 6px;
-    }
-    
-    .addBtn,
-    .removeBtn,
-    .downloadBtn {
-        padding: 5px 8px;
-        font-size: 12px;
-        min-width: 70px;
-    }
+  .title {
+    font-size: 36px;
+    margin-top: 90px;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .input {
+    width: 100%;
+    max-width: 160px;
+    font-size: 13px;
+  }
+
+  .addBtn,
+  .removeBtn,
+  .downloadBtn {
+    font-size: 13px;
+    min-width: 70px;
+  }
 }
 
 @media (max-width: 360px) {
-    .title {
-        font-size: 30px;
-    }
-    
-    .table {
-        display: block;
-        overflow-x: auto; /* Horizontal scrolling for very small screens */
-        white-space: nowrap;
-    }
-    
-    .inputGroup {
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-    }
-    
-    .input {
-        width: 100%;
-        max-width: 120px;
-    }
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .inputGroup {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
+/* Print */
 @media print {
   .noPrint {
     display: none !important;

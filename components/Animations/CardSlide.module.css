@@ -1,0 +1,40 @@
+.card {
+  width: calc(100vw - 500px);
+  margin: 16px 20px;
+  height: 140px;
+  display: flex;
+  color: #0A0C29;
+  align-items: center;
+  background-color: #F6FBFA;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateX(var(--slide-distance));
+  transition: transform 0.7s ease-out, opacity 0.7s ease-out;
+  will-change: transform, opacity;
+}
+
+
+
+@media (max-width: 768px) {
+  .card {
+    height: auto;
+    min-height: 100px;
+    padding: 1.2rem;
+    width: calc(100vw - 60px);
+  }
+}
+/* Left & Right origins */
+.fromLeft {
+  transform: translateX(calc(-1 * var(--slide-distance)));
+}
+
+.fromRight {
+  transform: translateX(var(--slide-distance));
+}
+
+/* When visible */
+.active {
+  opacity: 1;
+  transform: translateX(0);
+}
