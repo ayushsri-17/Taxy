@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from 'next/link';
-import Navbar from "./navbar";
-import ScrollFloat from "@/components/Animations/ScrollFloat";
 import CardSlide from "@/components/Animations/CardSlide";
 
 export default function Home() {
@@ -18,7 +16,7 @@ export default function Home() {
   return (
     <>
       <div className="container">
-        <Navbar />
+
         <section className="section-1">
 
   {/* CENTER TEXT */}
@@ -50,15 +48,9 @@ export default function Home() {
         </section>
        
         <hr style={{border:"1px solid #1c3f3a", width:"70%",   margin: "0px auto"}} />
-         <ScrollFloat
-          animationDuration={1.5}
-          ease="back.inOut(2)"
-          scrollStart="center bottom+=50%"
-          scrollEnd="bottom bottom-=40%"
-          stagger={0.03}
-        >
+    
           Features
-        </ScrollFloat>
+      
         <hr style={{border:"1px solid #1c3f3a", width:"70%",   margin: "0px auto"}} />
 
         <section className="section-2">
@@ -83,15 +75,9 @@ export default function Home() {
           </div>
         </section>
         <hr style={{border:"1px solid #1c3f3a", width:"70%",   margin: "0px auto"}} />
-        <ScrollFloat
-            animationDuration={2}
-            ease='back.inOut(2)'
-            scrollStart='center bottom+=50%'
-            scrollEnd='bottom bottom-=40%'
-            stagger={0.03}
-          >
+     
             About
-          </ScrollFloat>
+        
         <hr style={{border:"1px solid #1c3f3a", width:"70%",   margin: "0px auto"}} />
         <section className="section-3">
           

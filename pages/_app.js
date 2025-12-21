@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
-import Navbar from './navbar';
+import dynamic from "next/dynamic";
 import { Poppins } from "next/font/google";
+
+const Navbar = dynamic(() => import("./navbar"), { ssr: false });
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -11,7 +13,7 @@ const poppins = Poppins({
 export default function MyApp({ Component, pageProps }) {
   return (
     <div className={poppins.className}>
-      <Navbar/>
+      <Navbar />
       <Component {...pageProps} />
     </div>
   );
