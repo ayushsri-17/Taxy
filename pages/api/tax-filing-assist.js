@@ -16,23 +16,26 @@ export default async function handler(req, res) {
     }
 
     const prompt = `
-You are an expert Indian tax advisor. Analyze the user's provided tax details and
-suggest practical ways to optimize their tax savings.
+You are an expert Indian tax advisor. Analyze the user's tax details and suggest
+ways to optimize tax savings.
 
-User Data:
-${JSON.stringify(formData, null, 2)}
+User profile (key details):
+- Age: ${formData.age}
+- Income sources: ${formData.incomeSources?.join(", ")}
+- Annual income: ₹${formData.totalIncome}
+- Deductions claimed: ${formData.deductions?.join(", ") || "None"}
+- Housing: ${formData.housingStatus}
 
 Consider:
-- Age-based exemptions (senior citizens)
-- Salary/business/other income combinations
+- Age-based exemptions
 - Deductions (80C, 80D, HRA, home loan, etc.)
-- Choosing between Old and New Regime
+- Old vs New Regime
 - Common missed deductions
-- Investment or saving strategies to reduce taxable income
 
-Provide 5 personalized, actionable, and user-friendly suggestions with emojis and pointers.
-Keep them concise and practical.
+Provide 5 concise, actionable suggestions with emojis.
+Limit to 5 bullet points, max 2 lines each.
 `;
+
  
   const referer =
   process.env.VERCEL_ENV === "production"
@@ -48,15 +51,17 @@ Keep them concise and practical.
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "user",
-            content: [{ type: "text", text: prompt }],
-          },
-        ],
-      }),
-    });
+  model: "google/gemini-2.5-flash",
+  messages: [
+    {
+      role: "user",
+      content: [{ type: "text", text: prompt }],
+    },
+  ],
+  max_tokens: 1200,
+  temperature: 0.7
+}),
+    })
 
     // ✅ Parse response safely
     const data = await response.json();

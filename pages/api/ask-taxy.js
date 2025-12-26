@@ -5,7 +5,7 @@ console.log("🔑 Prefix:", process.env.OPENROUTER_API_KEY?.slice(0, 10) || "❌
 
     const question = req.body.inputData || "No question provided.";
      
-    const referer =
+  const referer =
     process.env.VERCEL_ENV === "production"
     ? "https://taxy-one.vercel.app"
     : "http://localhost:3000";
@@ -18,15 +18,15 @@ console.log("🔑 Prefix:", process.env.OPENROUTER_API_KEY?.slice(0, 10) || "❌
         "X-Title": "AskTaxy Assistant",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-  {
-    role: "user",
-    content: [
-      {
-        type: "text",
-        text: `You are AskTaxy, a friendly and knowledgeable Indian tax assistant 🇮🇳.
+    body: JSON.stringify({
+  model: "google/gemini-2.5-flash",
+  messages: [
+    {
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: `You are AskTaxy, a friendly and knowledgeable Indian tax assistant 🇮🇳.
 
 Your goal is to provide accurate, lawful, and easy-to-understand tax advice for Indian users.
 
@@ -43,11 +43,15 @@ Your goal is to provide accurate, lawful, and easy-to-understand tax advice for 
 - Friendly, patient, and trustworthy — like a helpful CA explaining things clearly.
 - End answers with a short summary or key takeaway.
 
-User question: ${question}` }],
-          },
-        ],
-      }),
-    });
+User question: ${question}`
+        }
+      ]
+    }
+  ],
+  max_tokens: 1200,
+  temperature: 0.7
+}),
+    })
 
     const data = await response.json();
     res.status(response.status).json(data);
