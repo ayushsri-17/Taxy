@@ -6,22 +6,21 @@
   max-width: 1300px;
   margin: 0 auto;
   opacity: 0;
-  transform: translateY(35px);
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 0.1s;
+  transform: translateY(45px);
+  animation: pageFadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.45s;
 }
 
-@keyframes fadeInUp {
+@keyframes pageFadeInUp {
   from {
     opacity: 0;
-    transform: translateY(35px);
+    transform: translateY(45px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
 
 .headerSection {
   text-align: center;
