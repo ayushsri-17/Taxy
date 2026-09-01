@@ -127,7 +127,7 @@ export default function ProfessionalTaxCalculator() {
               onChange={(e) => setMonthlySalary(e.target.value)}
               min="0"
             />
-          </div>
+          </div>/////
 
           {selectedState === "maharashtra" && (
             <div className={styles.formGroup}>
@@ -210,4 +210,4 @@ export default function ProfessionalTaxCalculator() {
       </div>
     </div>
   );
-}
+}
