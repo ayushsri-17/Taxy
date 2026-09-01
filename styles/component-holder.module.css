@@ -5,6 +5,21 @@
   padding: 120px 24px 60px 24px;
   max-width: 1200px;
   margin: 0 auto;
+  opacity: 0;
+  transform: translateY(35px);
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.1s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .headerSection {
@@ -313,6 +328,10 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(35px);
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.1s;
 }
 
 .form {
