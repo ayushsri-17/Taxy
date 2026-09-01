@@ -4,18 +4,26 @@ import { useRouter } from "next/router";
 import styles from "../styles/component-holder.module.css";
 
 export default function Navbar() {
+    const [mounted, setMounted] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState("");
     const router = useRouter();
 
     useEffect(() => {
+        setMounted(true);
         const token = localStorage.getItem("token");
-        setIsLoggedIn(!!token); // Convert to boolean
-    }, []);
+        const name = localStorage.getItem("userName");
+        setIsLoggedIn(!!token);
+        setUserName(name || "");
+    }, [router.pathname]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userEmail");
         setIsLoggedIn(false);
-        router.push("/login"); // Redirect to login page
+        setUserName("");
+        router.push("/login");
     };
 
     return (
@@ -24,10 +32,17 @@ export default function Navbar() {
                 <Link href="/">Home</Link>
                 <Link href="/#feature-card">Features</Link>
                 <Link href="/#about">About</Link>
-                {isLoggedIn ? (
-                    <button onClick={handleLogout} className={styles.navLogoutBtn}>
-                        Logout
-                    </button>
+                {mounted && isLoggedIn ? (
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
+                        {userName && (
+                            <span style={{ fontSize: "14px", fontWeight: "600", color: "#ffffff" }}>
+                                Hi, {userName}
+                            </span>
+                        )}
+                        <button onClick={handleLogout} className={styles.navLogoutBtn}>
+                            Logout
+                        </button>
+                    </div>
                 ) : (
                     <Link href="/login">
                         <button className={styles.navLoginBtn}>Login</button>
@@ -37,3 +52,5 @@ export default function Navbar() {
         </nav>
     );
 }
+
+

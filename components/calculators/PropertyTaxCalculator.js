@@ -1,113 +1,238 @@
 "use client";
-import React, { useState } from 'react';
-import styles from '@/styles/calculator.module.css';
+import { useState } from "react";
+import Link from "next/link";
+import styles from "@/styles/calculator.module.css";
+
+const CITY_PRESETS = {
+  bbmp: { name: "Bengaluru (BBMP)", baseRateSqFt: 2.5, cessPercent: 24, rentedFactor: 2 },
+  bmc: { name: "Mumbai (BMC)", baseRateSqFt: 4.0, cessPercent: 18, rentedFactor: 1.6 },
+  mcd: { name: "Delhi (MCD)", baseRateSqFt: 3.0, cessPercent: 15, rentedFactor: 1.5 },
+  gcc: { name: "Chennai (GCC)", baseRateSqFt: 2.0, cessPercent: 10, rentedFactor: 1.8 },
+  ghmc: { name: "Hyderabad (GHMC)", baseRateSqFt: 1.8, cessPercent: 12, rentedFactor: 1.5 },
+  custom: { name: "Custom Municipality", baseRateSqFt: 2.0, cessPercent: 15, rentedFactor: 1.5 }
+};
 
 export default function PropertyTaxCalculator() {
+  const [city, setCity] = useState("bbmp");
   const [propertyType, setPropertyType] = useState("residential");
-  const [propertyUsage, setPropertyUsage] = useState("self");
-  const [propertySize, setPropertySize] = useState(0);
-  const [numFloors, setNumFloors] = useState(1);
-  const [constructionYear, setConstructionYear] = useState(2024);
-  const [location, setLocation] = useState("urban");
-  const [marketValue, setMarketValue] = useState(0);
-  const [baseTaxRate, setBaseTaxRate] = useState(0);
-  const [waterTax, setWaterTax] = useState(2);
-  const [sewageTax, setSewageTax] = useState(1);
-  const [fireTax, setFireTax] = useState(500);
-  const [discount, setDiscount] = useState(0);
-  const [latePenalty, setLatePenalty] = useState(5);
-  const [finalTax, setFinalTax] = useState(0);
+  const [usage, setUsage] = useState("self");
+  const [builtUpArea, setBuiltUpArea] = useState("");
+  const [propertyAge, setPropertyAge] = useState("0_5");
+  const [customRate, setCustomRate] = useState("2.0");
+  const [earlyDiscount, setEarlyDiscount] = useState(true);
 
-  // Tax Calculation
-  const calculateTax = () => {
-    if (!marketValue || !baseTaxRate) {
-      setFinalTax(0);
-      return;
-    }
+  const area = parseFloat(builtUpArea) || 0;
+  const activeCity = CITY_PRESETS[city] || CITY_PRESETS.custom;
 
-    let basePropertyTax = marketValue * (baseTaxRate / 100);
-    let totalAdditionalTaxes = (marketValue * (waterTax / 100)) + (marketValue * (sewageTax / 100)) + fireTax;
-    let totalTaxBeforeDiscount = basePropertyTax + totalAdditionalTaxes;
-    let discountAmount = totalTaxBeforeDiscount * (discount / 100);
-    let taxAfterDiscount = totalTaxBeforeDiscount - discountAmount;
-    let penaltyAmount = taxAfterDiscount * (latePenalty / 100);
-    let finalTaxAmount = parseFloat(taxAfterDiscount + penaltyAmount).toFixed(2);
+  let ratePerSqFtMonth = city === "custom" ? (parseFloat(customRate) || 0) : activeCity.baseRateSqFt;
 
-    setFinalTax(finalTaxAmount);
-  };
+  if (propertyType === "commercial") ratePerSqFtMonth *= 2.5;
+  if (propertyType === "industrial") ratePerSqFtMonth *= 2.0;
+  if (propertyType === "vacant") ratePerSqFtMonth *= 0.5;
 
-  // Reset Form
+  if (usage === "rented") ratePerSqFtMonth *= activeCity.rentedFactor;
+
+  const annualGrossValue = area * ratePerSqFtMonth * 12;
+
+  let depRate = 0.10;
+  if (propertyAge === "0_5") depRate = 0.05;
+  else if (propertyAge === "5_15") depRate = 0.15;
+  else if (propertyAge === "15_25") depRate = 0.25;
+  else if (propertyAge === "25_plus") depRate = 0.35;
+
+  const depreciationAmount = annualGrossValue * depRate;
+  const netAnnualValue = Math.max(annualGrossValue - depreciationAmount, 0);
+
+  const basePropertyTax = netAnnualValue * 0.20;
+
+  const cessAmount = (basePropertyTax * activeCity.cessPercent) / 100;
+  const grossTax = basePropertyTax + cessAmount;
+
+  const rebateAmount = earlyDiscount ? grossTax * 0.05 : 0;
+  const netPropertyTax = Math.max(grossTax - rebateAmount, 0);
+
   const resetForm = () => {
+    setCity("bbmp");
     setPropertyType("residential");
-    setPropertyUsage("self");
-    setPropertySize(0);
-    setNumFloors(1);
-    setConstructionYear(2024);
-    setLocation("urban");
-    setMarketValue(0);
-    setBaseTaxRate(0);
-    setWaterTax(2);
-    setSewageTax(1);
-    setFireTax(500);
-    setDiscount(0);
-    setLatePenalty(5);
-    setFinalTax(0);
+    setUsage("self");
+    setBuiltUpArea("");
+    setPropertyAge("0_5");
+    setCustomRate("2.0");
+    setEarlyDiscount(true);
   };
 
   return (
-    <>
-     <h2 className={styles.calcTitle}>Property Tax Calculator</h2>
-     <div className={styles.calcContainer}>
-     <div className={styles.calc}>
+    <div className={styles.calcPageWrapper}>
+      <Link href="/calc-holder" className={styles.backLink}>
+        ← Back to Calculators
+      </Link>
 
-      <select  className={styles.input} value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
-        <option value="residential">Residential</option>
-        <option value="commercial">Commercial</option>
-        <option value="industrial">Industrial</option>
-        <option value="agricultural">Agricultural</option>
-      </select>
+      <div className={styles.calcHeader}>
+        <div className={styles.calcBadge}>Municipal & Urban Property Tax</div>
+        <h1 className={styles.calcTitle}>Property Tax Calculator</h1>
+        <p className={styles.calcSubtitle}>
+          Estimate Annual Municipal Property Tax via the Unit Area Value (UAV) & Capital Value Methods.
+        </p>
+      </div>
 
-      <select className={styles.input} value={propertyUsage} onChange={(e) => setPropertyUsage(e.target.value)}>
-        <option value="self">Self-Occupied</option>
-        <option value="rented">Rented</option>
-        <option value="vacant">Vacant</option>
-        <option value="mixed">Mixed-Use</option>
-      </select>
+      <div className={styles.calcGrid}>
+        <div className={styles.glassCard}>
+          <div className={styles.cardTitle}>
+            <span>🏠</span> Property & Location Details
+          </div>
 
-      <input className={styles.input} type="number" value={propertySize} placeholder="Property Size (sq. ft)" onChange={(e) => setPropertySize(Number(e.target.value) || 0)} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Municipal Corporation / City</label>
+            <select
+              className={styles.input}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            >
+              <option value="bbmp">Bengaluru (BBMP)</option>
+              <option value="bmc">Mumbai (BMC)</option>
+              <option value="mcd">Delhi (MCD)</option>
+              <option value="gcc">Chennai (GCC)</option>
+              <option value="ghmc">Hyderabad (GHMC)</option>
+              <option value="custom">Custom Municipal Rates</option>
+            </select>
+          </div>
 
-      <input className={styles.input} type="number" value={numFloors} placeholder="Number of Floors" onChange={(e) => setNumFloors(Number(e.target.value) || 1)} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Built-up / Plinth Area (sq. ft.)</label>
+            <input
+              className={styles.input}
+              type="number"
+              placeholder="e.g. 1200"
+              value={builtUpArea}
+              onChange={(e) => setBuiltUpArea(e.target.value)}
+              min="0"
+            />
+          </div>
 
-      <input  className={styles.input}type="number" value={constructionYear} placeholder="Construction Year" min="1900" max="2025" onChange={(e) => setConstructionYear(Number(e.target.value) || 2024)} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Property Category</label>
+            <select
+              className={styles.input}
+              value={propertyType}
+              onChange={(e) => setPropertyType(e.target.value)}
+            >
+              <option value="residential">Residential Apartment / House</option>
+              <option value="commercial">Commercial / Office / Shop</option>
+              <option value="industrial">Industrial Shed / Factory</option>
+              <option value="vacant">Vacant Plot / Land</option>
+            </select>
+          </div>
 
-      <select className={styles.input} value={location} onChange={(e) => setLocation(e.target.value)}>
-        <option value="urban">Urban</option>
-        <option value="semi-urban">Semi-Urban</option>
-        <option value="rural">Rural</option>
-      </select>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Occupancy Status</label>
+            <div className={styles.toggleGroup}>
+              <button
+                type="button"
+                className={usage === "self" ? styles.activeToggleBtn : styles.toggleBtn}
+                onClick={() => setUsage("self")}
+              >
+                Self Occupied
+              </button>
+              <button
+                type="button"
+                className={usage === "rented" ? styles.activeToggleBtn : styles.toggleBtn}
+                onClick={() => setUsage("rented")}
+              >
+                Rented / Tenanted
+              </button>
+            </div>
+          </div>
 
-      <input className={styles.input} type="number" value={marketValue} placeholder="Market Value" onChange={(e) => setMarketValue(Number(e.target.value) || 0)} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Age of Property</label>
+            <select
+              className={styles.input}
+              value={propertyAge}
+              onChange={(e) => setPropertyAge(e.target.value)}
+            >
+              <option value="0_5">Less than 5 years (5% depreciation)</option>
+              <option value="5_15">5 to 15 years (15% depreciation)</option>
+              <option value="15_25">15 to 25 years (25% depreciation)</option>
+              <option value="25_plus">More than 25 years (35% depreciation)</option>
+            </select>
+          </div>
 
-      <input className={styles.input}type="number" value={baseTaxRate} placeholder="Base Tax Rate (%)" onChange={(e) => setBaseTaxRate(Number(e.target.value) || 0)} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label} style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={earlyDiscount}
+                onChange={(e) => setEarlyDiscount(e.target.checked)}
+                style={{ width: "18px", height: "18px", accentColor: "#1C3F3A" }}
+              />
+              <span>Apply Early Bird 5% Payment Rebate</span>
+            </label>
+          </div>
 
-      <input className={styles.input} type="number" value={waterTax} placeholder="Water Tax Rate (%)" onChange={(e) => setWaterTax(Number(e.target.value) || 2)} required />
+          <div className={styles.buttonGroup}>
+            <button className={styles.calcBtn} type="button">
+              Calculate Tax
+            </button>
+            <button className={styles.resetBtn} type="button" onClick={resetForm}>
+              Reset
+            </button>
+          </div>
+        </div>
 
-      <input className={styles.input} type="number" value={sewageTax} placeholder="Sewage Tax Rate (%)" onChange={(e) => setSewageTax(Number(e.target.value) || 1)} required />
+        <div className={styles.glassCard}>
+          <div className={styles.cardTitle}>
+            <span>📑</span> Annual Property Tax Breakdown
+          </div>
 
-      <input  className={styles.input}type="number" value={fireTax} placeholder="Fire Tax (Fixed Amount)" onChange={(e) => setFireTax(Number(e.target.value) || 500)} required />
+          <div className={styles.resultHighlight}>
+            <div className={styles.resultLabel}>Net Annual Property Tax Payable</div>
+            <div className={styles.resultAmount}>
+              ₹{netPropertyTax.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+            </div>
+          </div>
 
-      <input  className={styles.input}type="number" value={discount} placeholder="Discount (%)" onChange={(e) => setDiscount(Number(e.target.value) || 0)} />
+          <div className={styles.resultRows}>
+            <div className={styles.resultRow}>
+              <span className="rowLabel">Selected Municipality:</span>
+              <span className="rowValue">{activeCity.name}</span>
+            </div>
+            <div className={styles.resultRow}>
+              <span className="rowLabel">Gross Annual Value (GAV):</span>
+              <span className="rowValue">₹{annualGrossValue.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div className={styles.resultRow}>
+              <span className="rowLabel">Depreciation Deduction ({(depRate * 100).toFixed(0)}%):</span>
+              <span className="rowValue" style={{ color: "#2E7D32" }}>
+                -₹{depreciationAmount.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+              </span>
+            </div>
+            <div className={styles.resultRow}>
+              <span className="rowLabel">Net Annual Value (NAV):</span>
+              <span className="rowValue">₹{netAnnualValue.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div className={styles.resultRow}>
+              <span className="rowLabel">Base Property Tax (20% of NAV):</span>
+              <span className="rowValue">₹{basePropertyTax.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div className={styles.resultRow}>
+              <span className="rowLabel">Municipal Cesses ({activeCity.cessPercent}%):</span>
+              <span className="rowValue">₹{cessAmount.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
+            </div>
+            {earlyDiscount && (
+              <div className={styles.resultRow}>
+                <span className="rowLabel">Early Payment Rebate (5%):</span>
+                <span className="rowValue" style={{ color: "#2E7D32" }}>
+                  -₹{rebateAmount.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+                </span>
+              </div>
+            )}
+          </div>
 
-      <input  className={styles.input}type="number" value={latePenalty} placeholder="Late Penalty (%)" onChange={(e) => setLatePenalty(Number(e.target.value) || 5)} />
-
-      <button className={styles.calcBtn} onClick={calculateTax} disabled={!marketValue || !baseTaxRate}>
-        Calculate Tax
-      </button>
-      <button className={styles.calcBtn} onClick={resetForm}>Reset</button>
-
-      <h3>Final Property Tax Payable: ₹ <span>{finalTax}</span></h3>
+          <div className={styles.recommendationBanner}>
+            💡 Pay before the municipal deadline to retain your 5% early rebate benefit.
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    </>
   );
 }

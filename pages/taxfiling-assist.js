@@ -1,21 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from "react";
+import Link from "next/link";
 import styles from "../styles/component-holder.module.css";
-import { calculateTax } from '../components/taxFilingCalc';
+import { calculateTax } from "../components/taxFilingCalc";
 
 export default function TaxFiling() {
   const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    pan: '',
-    employmentType: '',
-    salaryIncome: '',
-    businessIncome: '',
-    otherIncome: '',
-    "80C": '',
-    "80D": '',
-    HRA: '',
-    homeLoanInterest: '',
-    regime: 'Old',
+    name: "",
+    age: "",
+    pan: "",
+    employmentType: "Salaried",
+    salaryIncome: "",
+    businessIncome: "",
+    otherIncome: "",
+    "80C": "",
+    "80D": "",
+    HRA: "",
+    homeLoanInterest: "",
+    regime: "New",
   });
 
   const [errors, setErrors] = useState({});
@@ -24,62 +25,53 @@ export default function TaxFiling() {
   const [suggestions, setSuggestions] = useState([]);
   const [loadingAI, setLoadingAI] = useState(false);
 
+  async function getAISuggestions(data) {
+    try {
+      const response = await fetch("/api/tax-filing-assist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formData: data }),
+      });
 
-async function getAISuggestions(formData) {
-  try {
-    const response = await fetch("/api/tax-filing-assist", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ formData }),
-  });
+      const resJson = await response.json();
 
-    const data = await response.json();
+      if (!response.ok) {
+        console.error("Backend API error:", resJson);
+        return ["⚠️ Backend API error: " + (resJson.error?.message || "Unknown error occurred.")];
+      }
 
-    if (!response.ok) {
-      console.error("Backend API error:", data);
-      return ["⚠️ Backend API error: " + (data.error?.message || "Unknown error")];
+      const text =
+        resJson?.choices?.[0]?.message?.content?.[0]?.text ||
+        resJson?.choices?.[0]?.message?.content ||
+        "No AI suggestions generated.";
+
+      return text
+        .split(/\n(?=\d+\.|•|–|✅|💡|🏠|💰)/)
+        .filter(Boolean);
+    } catch (err) {
+      console.error("AI suggestion error:", err);
+      return ["⚠️ Error fetching AI suggestions. Please check connection."];
     }
-
-    const text =
-      data?.choices?.[0]?.message?.content?.[0]?.text ||
-      data?.choices?.[0]?.message?.content ||
-      "No AI suggestions generated.";
-
-    return text
-      .split(/\n(?=\d+\.|•|–|✅|💡|🏠|💰)/)
-      .filter(Boolean);
-  } catch (err) {
-    console.error("AI suggestion error:", err);
-    return ["⚠️ Error fetching AI suggestions."];
   }
-}
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name) newErrors.name = 'Name is required';
+    if (!formData.name) newErrors.name = "Name is required";
     if (!formData.age || isNaN(formData.age) || formData.age <= 0)
-      newErrors.age = 'Age must be a positive number';
+      newErrors.age = "Valid age is required";
 
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-    if (!formData.pan || !panRegex.test(formData.pan))
-      newErrors.pan = 'Enter a valid PAN';
-
-    if (formData.salaryIncome && formData.salaryIncome < 0)
-      newErrors.salaryIncome = 'Salary Income cannot be negative';
-
-    if (formData.businessIncome && formData.businessIncome < 0)
-      newErrors.businessIncome = 'Business Income cannot be negative';
+    if (formData.pan && !panRegex.test(formData.pan.toUpperCase()))
+      newErrors.pan = "Enter a valid 10-digit PAN (e.g. ABCDE1234F)";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -87,18 +79,18 @@ async function getAISuggestions(formData) {
 
   const handleReset = () => {
     setFormData({
-      name: '',
-      age: '',
-      pan: '',
-      employmentType: '',
-      salaryIncome: '',
-      businessIncome: '',
-      otherIncome: '',
-      "80C": '',
-      "80D": '',
-      HRA: '',
-      homeLoanInterest: '',
-      regime: 'Old',
+      name: "",
+      age: "",
+      pan: "",
+      employmentType: "Salaried",
+      salaryIncome: "",
+      businessIncome: "",
+      otherIncome: "",
+      "80C": "",
+      "80D": "",
+      HRA: "",
+      homeLoanInterest: "",
+      regime: "New",
     });
     setTaxResult(null);
     setShowResults(false);
@@ -116,111 +108,282 @@ async function getAISuggestions(formData) {
   };
 
   const handleAISuggestions = async () => {
-  setLoadingAI(true);
-  setSuggestions(["Thinking..."]);
+    setLoadingAI(true);
+    setSuggestions(["Analyzing tax profile and deductions..."]);
 
-
-  await new Promise(resolve => setTimeout(resolve, 2000));
-
-  const newSuggestions = await getAISuggestions(formData);
-  setSuggestions(newSuggestions);
-  setLoadingAI(false);
-};
-
+    const newSuggestions = await getAISuggestions(formData);
+    setSuggestions(newSuggestions);
+    setLoadingAI(false);
+  };
 
   return (
-    <>
-      <h1 className={styles.componentTitle}> AI Tax Filing Assistant</h1>
-      <button className={styles.addBtn} onClick={handleReset}>Start a new filing ➕</button>
+    <div className={styles.glassPageWrapper}>
+      <Link href="/" className={styles.backLink}>
+        ← Back to Home
+      </Link>
+
+      <div className={styles.headerSection}>
+        <div className={styles.badge}>📋 ITR Assistant & Deductions</div>
+        <h1 className={styles.componentTitle}>AI Tax Filing Assistant</h1>
+        <p className={styles.subtitle}>
+          Step-by-step tax profile builder with automated computation and AI deduction recommendations.
+        </p>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
+        <button className={styles.addBtn} type="button" onClick={handleReset}>
+          Start a new filing ➕
+        </button>
+      </div>
+
       <div className={styles.formAndSuggestionsContainer}>
-        <div className={styles.formSection}>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <h1>1. Personal Details</h1>
-            <input className={styles.input} type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
-            {errors.name && <p className={styles.error}>{errors.name}</p>}
+        {/* Left Column: Form & Computation */}
+        <div className={styles.glassCard}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.cardTitle}>
+              <span>👤 1. Personal Details</span>
+            </div>
 
-            <input className={styles.input} type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Age" />
-            {errors.age && <p className={styles.error}>{errors.age}</p>}
+            <div className={styles.fieldGrid2}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Full Name</label>
+                <input
+                  className={styles.input}
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="e.g. Rahul Sharma"
+                />
+                {errors.name && <p className={styles.error}>{errors.name}</p>}
+              </div>
 
-            <input className={styles.input} type="text" name="pan" value={formData.pan} onChange={handleChange} placeholder="PAN" />
-            {errors.pan && <p className={styles.error}>{errors.pan}</p>}
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Age</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  placeholder="e.g. 28"
+                  min="18"
+                />
+                {errors.age && <p className={styles.error}>{errors.age}</p>}
+              </div>
+            </div>
 
-            <input className={styles.input} type="text" name="employmentType" value={formData.employmentType} onChange={handleChange} placeholder="Employment Type" />
+            <div className={styles.fieldGrid2}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>PAN (Optional)</label>
+                <input
+                  className={styles.input}
+                  type="text"
+                  name="pan"
+                  value={formData.pan}
+                  onChange={handleChange}
+                  placeholder="ABCDE1234F"
+                  maxLength={10}
+                />
+                {errors.pan && <p className={styles.error}>{errors.pan}</p>}
+              </div>
 
-            <label htmlFor="regime">Choose a regime:</label>
-            <select className={styles.input} name="regime" value={formData.regime} onChange={handleChange}>
-              <option value="Old">Old</option>
-              <option value="New">New</option>
-            </select>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Tax Regime</label>
+                <select
+                  className={styles.select}
+                  name="regime"
+                  value={formData.regime}
+                  onChange={handleChange}
+                >
+                  <option value="New">New Tax Regime (Default)</option>
+                  <option value="Old">Old Tax Regime</option>
+                </select>
+              </div>
+            </div>
 
-            <h1>2. Income Details</h1>
-            <input className={styles.input} type="number" name="salaryIncome" value={formData.salaryIncome} onChange={handleChange} placeholder="Salary Income" />
-            {errors.salaryIncome && <p className={styles.error}>{errors.salaryIncome}</p>}
+            <div className={styles.cardTitle} style={{ marginTop: "24px" }}>
+              <span>💼 2. Annual Income Streams (₹)</span>
+            </div>
 
-            <input className={styles.input} type="number" name="businessIncome" value={formData.businessIncome} onChange={handleChange} placeholder="Business Income" />
-            {errors.businessIncome && <p className={styles.error}>{errors.businessIncome}</p>}
+            <div className={styles.fieldGrid2}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Salary / CTC Income</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="salaryIncome"
+                  value={formData.salaryIncome}
+                  onChange={handleChange}
+                  placeholder="e.g. 1200000"
+                  min="0"
+                />
+              </div>
 
-            <input className={styles.input} type="number" name="otherIncome" value={formData.otherIncome} onChange={handleChange} placeholder="Other Income (rent, interest, etc)" />
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Business / Profession Income</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="businessIncome"
+                  value={formData.businessIncome}
+                  onChange={handleChange}
+                  placeholder="e.g. 300000"
+                  min="0"
+                />
+              </div>
+            </div>
 
-            <h1>3. Deductions</h1>
-            <input className={styles.input} type="number" name="80C" value={formData["80C"]} onChange={handleChange} placeholder="80C (LIC, PPF, ELSS, etc.)" />
-            <input className={styles.input} type="number" name="80D" value={formData["80D"]} onChange={handleChange} placeholder="80D (Health Insurance)" />
-            <input className={styles.input} type="number" name="HRA" value={formData.HRA} onChange={handleChange} placeholder="HRA (if applicable)" />
-            <input className={styles.input} type="number" name="homeLoanInterest" value={formData.homeLoanInterest} onChange={handleChange} placeholder="Home loan interest (Section 24B)" />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Other Income (Interest, Rental, Dividends)</label>
+              <input
+                className={styles.input}
+                type="number"
+                name="otherIncome"
+                value={formData.otherIncome}
+                onChange={handleChange}
+                placeholder="e.g. 50000"
+                min="0"
+              />
+            </div>
 
-            <button onClick={handleAISuggestions} disabled={loadingAI} className={styles.submitBtn}>{loadingAI ? 'Thinking...' : 'Get AI Suggestions'}</button>
+            <div className={styles.cardTitle} style={{ marginTop: "24px" }}>
+              <span>🛡️ 3. Deductions & Exemptions (₹)</span>
+            </div>
+
+            <div className={styles.fieldGrid2}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Section 80C (PPF, ELSS, EPF, LIC)</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="80C"
+                  value={formData["80C"]}
+                  onChange={handleChange}
+                  placeholder="Max ₹1,50,000"
+                  min="0"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Section 80D (Health Insurance)</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="80D"
+                  value={formData["80D"]}
+                  onChange={handleChange}
+                  placeholder="e.g. 25000"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className={styles.fieldGrid2}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>HRA Exemption</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="HRA"
+                  value={formData.HRA}
+                  onChange={handleChange}
+                  placeholder="e.g. 120000"
+                  min="0"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Home Loan Interest Sec 24(b)</label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  name="homeLoanInterest"
+                  value={formData.homeLoanInterest}
+                  onChange={handleChange}
+                  placeholder="Max ₹2,00,000"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
+              <button type="submit" className={styles.submitBtn} style={{ flex: 1 }}>
+                Calculate Estimated Tax
+              </button>
+              <button
+                type="button"
+                onClick={handleAISuggestions}
+                disabled={loadingAI}
+                className={styles.submitBtn}
+                style={{
+                  flex: 1,
+                  background: "linear-gradient(135deg, #0A0C29 0%, #1C3F3A 100%)",
+                }}
+              >
+                {loadingAI ? "AI Thinking..." : "✨ Get AI Advice"}
+              </button>
+            </div>
           </form>
 
+          {/* Results Summary Box */}
           {showResults && taxResult && (
             <div className={styles.resultsContainer}>
-              <h2>Tax Calculation Results</h2>
-              <div className={styles.resultItem}>
-                <span>Tax Regime:</span>
-                <span>{taxResult.regime}</span>
+              <div style={{ fontSize: "16px", fontWeight: "800", color: "#1C3F3A", marginBottom: "12px" }}>
+                📊 Tax Calculation Summary
               </div>
               <div className={styles.resultItem}>
-                <span>Taxable Income:</span>
-                <span>₹{taxResult.taxableIncome.toLocaleString('en-IN')}</span>
+                <span>Selected Regime:</span>
+                <strong>{taxResult.regime} Regime</strong>
               </div>
               <div className={styles.resultItem}>
-                <span>Estimated Tax Liability:</span>
-                <span>₹{taxResult.tax.toLocaleString('en-IN')}</span>
+                <span>Net Taxable Income:</span>
+                <strong>₹{taxResult.taxableIncome.toLocaleString("en-IN")}</strong>
               </div>
-              <div className={styles.taxNote}>
-                <p>Note: {formData.regime === 'Old' 
-                  ? 'Old regime calculations include all applicable deductions.'
-                  : 'New regime has lower tax rates but fewer deductions.'}
-                </p>
+              <div className={styles.resultItem}>
+                <span>Estimated Annual Tax Payable:</span>
+                <strong style={{ fontSize: "18px", color: "#1C3F3A" }}>
+                  ₹{taxResult.tax.toLocaleString("en-IN")}
+                </strong>
               </div>
             </div>
           )}
         </div>
 
-        <div className={styles.suggestionsContainer}>
-          <h2 style={{fontWeight:'900'}}>Ai Tax Saving Tips</h2>
-          <div className={styles.suggestionsList}>
-            {suggestions.length > 0 ? (
-              suggestions.map((suggestion, index) => (
-                <div key={index} className={styles.suggestionItem}>
-                  {suggestion}
+        {/* Right Column: AI Suggestions & Tax Guide */}
+        <div>
+          <div className={styles.glassCard}>
+            <div className={styles.cardTitle}>
+              <span>🤖 AI Tax-Saving Recommendations</span>
+            </div>
+
+            <div className={styles.suggestionsList}>
+              {suggestions.length > 0 ? (
+                suggestions.map((suggestion, index) => (
+                  <div key={index} className={styles.suggestionItem}>
+                    {suggestion}
+                  </div>
+                ))
+              ) : (
+                <div style={{ textAlign: "center", color: "#5F7773", padding: "16px 0", fontSize: "13px" }}>
+                  Fill in your income & deduction details, then click <strong>"✨ Get AI Advice"</strong> to get custom strategies to minimize your tax liability.
                 </div>
-              ))
-            ) : (
-              <p>Fill in some details to get personalized AI tax-saving suggestions</p>
-            )}
+              )}
+            </div>
           </div>
+
           <div className={styles.generalTips}>
-            <h3>Common Tax Saving Options:</h3>
+            <h3>💡 Key Deductions Checklist:</h3>
             <ul>
-              <li>Section 80C (₹1.5L limit): PPF, ELSS, NSC, Tax-saving FDs</li>
-              <li>Section 80D: Health insurance premiums</li>
-              <li>Section 24: Home loan interest (up to ₹2L)</li>
-              <li>HRA: House Rent Allowance exemption</li>
-              <li>NPS: Additional ₹50,000 under 80CCD(1B)</li>
+              <li><strong>Section 80C</strong> (Max ₹1.5L): PPF, EPF, ELSS Mutual Funds, Life Insurance.</li>
+              <li><strong>Section 80D</strong>: Health Insurance for self (₹25k) + senior citizen parents (₹50k).</li>
+              <li><strong>Section 24(b)</strong>: Home loan interest deduction up to ₹2,00,000.</li>
+              <li><strong>Section 80CCD(1B)</strong>: Extra ₹50,000 deduction for NPS investments.</li>
             </ul>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
